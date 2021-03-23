@@ -19,5 +19,4 @@ export const PluginPollRPC = createPluginRPC(
         return AsyncCall<typeof import('./Services')>({}, { channel: new WorkerChannel(PollWorker), thenable: false })
     },
     PollMessage.events._,
-    true,
 )
