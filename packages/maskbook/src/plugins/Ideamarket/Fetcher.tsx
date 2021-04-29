@@ -1,5 +1,4 @@
-import { useAsync } from 'react-use'
-import { getListing } from './api'
+import { useListingData } from './ApiFetcher'
 import LogoButton from './UI/LogoButton'
 
 interface FetcherProps {
@@ -7,19 +6,19 @@ interface FetcherProps {
 }
 
 export default function Fetcher(props: FetcherProps) {
-    const response = useAsync(() => getListing(props.username), [props.username])
+    const response = useListingData(props.username)
 
-    if (response.loading) return <LogoButton found={false} username={props.username} />
+    if (response.isLoading) return <LogoButton found={false} username={props.username} />
 
-    if (response.error || !response.value?.rank) return <LogoButton found={false} username={props.username} />
+    if (!response.found) return <LogoButton found={false} username={props.username} />
 
     return (
         <LogoButton
             found={true}
             username={props.username}
-            rank={response.value?.rank}
-            dayChange={response.value?.dayChange.toString()}
-            price={response.value?.price.toString()}
+            rank={response.rank}
+            dayChange={response.dayChange.toString()}
+            price={response.price.toString()}
         />
     )
 }
